@@ -9,8 +9,11 @@ import morgan from "morgan"
 import path from "path"
 import authRoutes from './routes/auth.routes.js'
 import userRoutes from "./routes/user.routes.js"
+import postRoutes from './routes/post.routes.js'
 import { fileURLToPath } from "url"
 import {register} from './controllers/auth.js'
+import { verifyToken } from "./middleware/auth.middleware.js"
+import {createPost} from './controllers/posts.js'
 
 const __filename=fileURLToPath(import.meta.url)
 const __dirname =path.dirname(__filename)
@@ -37,9 +40,11 @@ const storage=multer.diskStorage({
 const upload=multer({storage})
 
 app.post("/auth/register",upload.single("picture"),register)
+app.post("/posts",verifyToken,upload.single("picture"),createPost)
 
 app.use('/auth',authRoutes)
 app.use('/users',userRoutes)
+app.use("/posts",postRoutes)
 
 const PORT=process.env.PORT||5000;
 mongoose.connect(process.env.MONGO_URL,{
