@@ -29,6 +29,10 @@ const UserSchema=mongoose.Schema({
         type:String,
         default: "",
     },
+    userPicturePath:{
+        type:String,
+        default: ""
+    },
     friends:{
         type:Array,
         default:[]

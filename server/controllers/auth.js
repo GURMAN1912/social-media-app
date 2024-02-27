@@ -10,6 +10,7 @@ export const register= async(req,res)=>{
             email,
             password,
             picturePath,
+            userPicturePath,
             friends,
             location,
             occupation
@@ -22,6 +23,7 @@ export const register= async(req,res)=>{
             email,
             password:passwordHash,
             picturePath,
+            userPicturePath,
             friends,
             location,
             occupation,
@@ -39,7 +41,8 @@ export const register= async(req,res)=>{
 export const login =async(req,res)=>{
     try {
         const {email,password}=req.body;
-        const foundUser=await User({email:email});
+        const foundUser=await User.findOne({email:email});   
+        console.log(foundUser)
         if(!foundUser) return res.status(400).json({msg: "User not found!..."})
 
         const isMatch=await bcrypt.compare(password,foundUser.password)
@@ -47,8 +50,8 @@ export const login =async(req,res)=>{
 
         const token=jwt.sign({id:foundUser.id},process.env.JWT_SECRET)
         delete foundUser.password;
-        res.cookie('access_token',token,{httpOnly:true}).status(200).json({foundUser })
-    } catch (error) {
+        res.status(200).json({ token, foundUser });
+    } catch (err) {
         res.status(500).json({error:err.message});       
     }
 }
