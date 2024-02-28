@@ -40,7 +40,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   return (
     <>
-      {posts.map(
+      {posts.slice().reverse().map(
         ({
           _id,
           userId,
