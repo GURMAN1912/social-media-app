@@ -14,6 +14,7 @@ import { fileURLToPath } from "url"
 import {register} from './controllers/auth.js'
 import { verifyToken } from "./middleware/auth.middleware.js"
 import {createPost} from './controllers/posts.js'
+import fileUpload from "express-fileupload"
 
 const __filename=fileURLToPath(import.meta.url)
 const __dirname =path.dirname(__filename)
@@ -26,7 +27,10 @@ app.use(morgan('common'))
 app.use(bodyParser.json({limit:"30mb" ,extented :true}))
 app.use(bodyParser.urlencoded({limit:"30mb",extended:true}))
 app.use(cors())
-app.use("/assets",express.static(path.join(__dirname,"public/assets")));
+// app.use("/assets",express.static(path.join(__dirname,"public/assets")));
+app.use(fileUpload({
+    useTempFiles:true
+}))
 
 
 const storage=multer.diskStorage({
@@ -39,8 +43,8 @@ const storage=multer.diskStorage({
 })
 const upload=multer({storage})
 
-app.post("/auth/register",upload.single("picture"),register)
-app.post("/posts",verifyToken,upload.single("picture"),createPost)
+app.post("/auth/register",register)
+app.post("/posts",verifyToken,createPost)
 
 app.use('/auth',authRoutes)
 app.use('/users',userRoutes)

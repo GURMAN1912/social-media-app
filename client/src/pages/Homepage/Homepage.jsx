@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux'
 const Homepage = () => {
   const isNonMobileScreens=useMediaQuery("(min-width:1000px)")
   const {_id,userPicturePath}=useSelector((state)=>state.user)
+  console.log(userPicturePath)
   return (
     <Box>
       <Navbar/>

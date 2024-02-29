@@ -1,41 +1,54 @@
 import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken"
 import User from '../models/user.js'
+import {v2 as cloudinary} from 'cloudinary'
+
+cloudinary.config({
+    cloud_name:'dvmhzq8pn',
+    api_key:'466945211727583',
+    api_secret:'sQ-vphSTDYvoNmT20pFdFWwdqSs'
+})
 
 export const register= async(req,res)=>{
-    try{
-        const {
-            firstName,
-            lastName,
-            email,
-            password,
-            picturePath,
-            userPicturePath,
-            friends,
-            location,
-            occupation
-        }=req.body;
-        const salt=await bcrypt.genSalt();
-        const passwordHash=await bcrypt.hash(password,salt);
-        const newUser= new User({
-            firstName,
-            lastName,
-            email,
-            password:passwordHash,
-            picturePath,
-            userPicturePath,
-            friends,
-            location,
-            occupation,
-            viewedProfile:Math.floor(Math.random()*1000),
-            impressions:Math.floor(Math.random()*1000),
-        })
-        const savedUser=await newUser.save()
-        res.status(201).json(savedUser)
-    }
-    catch(err){
-        res.status(500).json({error:err.message});
-    }
+    const file=req.files.picture;
+    let uploadedPic="https://www.pngarts.com/files/10/Default-Profile-Picture-Transparent-Image.png"
+    cloudinary.uploader.upload(file.tempFilePath, async(err,result)=>{
+        console.log(result);
+        uploadedPic=result.url;
+        try{
+            const {
+                firstName,
+                lastName,
+                email,
+                password,
+                picturePath,
+                userPicturePath,
+                friends,
+                location,
+                occupation
+            }=req.body;
+            const salt=await bcrypt.genSalt();
+            const passwordHash=await bcrypt.hash(password,salt);
+            const newUser= new User({
+                firstName,
+                lastName,
+                email,
+                password:passwordHash,
+                picturePath,
+                userPicturePath:uploadedPic,
+                friends,
+                location,
+                occupation,
+                viewedProfile:Math.floor(Math.random()*1000),
+                impressions:Math.floor(Math.random()*1000),
+            })
+            const savedUser=await newUser.save()
+            res.status(201).json(savedUser)
+        }
+        catch(err){
+            res.status(500).json({error:err.message});
+        }
+    })
 
 }
 export const login =async(req,res)=>{
