@@ -7,6 +7,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
+  console.log(isProfile)
 
   const getPosts = async () => {
     const response = await fetch("http://localhost:4000/posts", {
@@ -14,6 +15,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await response.json();
+    console.log(data)
     dispatch(setPosts({ posts: data }));
   };
 
@@ -32,15 +34,17 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   useEffect(() => {
     if (isProfile) {
+      console.log("user post")
       getUserPosts();
     } else {
+      console.log("all posts")
       getPosts();
     }
   }, []); 
 
   return (
     <>
-      {posts.slice().reverse().map(
+      {posts?.slice().reverse().map(
         ({
           _id,
           userId,

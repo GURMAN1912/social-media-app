@@ -10,7 +10,7 @@ const FriendListWidget = ({ userId }) => {
   const { palette } = useTheme();
   const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user.friends);
-
+ 
   const getFriends = async () => {
     const response = await fetch(
       `http://localhost:4000/users/${userId}/friends`,
@@ -20,6 +20,7 @@ const FriendListWidget = ({ userId }) => {
       }
     );
     const data = await response.json();
+    console.log(data)
     dispatch(setFriends({ friends: data }));
   };
 

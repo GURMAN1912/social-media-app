@@ -43,7 +43,7 @@ export const getFeedPosts=async(req,res)=>{
 export const getUserPosts=async(req,res)=>{
     try{
         const {userId}=req.params;
-        const userPost=await Post.findById(userId)
+        const userPost=await Post.find({userId})
         res.status(200).json(userPost)
     }
     catch(err){
