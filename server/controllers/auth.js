@@ -4,9 +4,9 @@ import User from '../models/user.js'
 import {v2 as cloudinary} from 'cloudinary'
 
 cloudinary.config({
-    cloud_name:'dvmhzq8pn',
-    api_key:'466945211727583',
-    api_secret:'sQ-vphSTDYvoNmT20pFdFWwdqSs'
+    cloud_name:process.env.CLOUD_NAME,
+    api_key:process.env.API_KEY,
+    api_secret:process.env.API_SECRET
 })
 
 export const register= async(req,res)=>{

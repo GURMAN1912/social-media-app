@@ -17,16 +17,20 @@ import {createPost} from './controllers/posts.js'
 import fileUpload from "express-fileupload"
 
 const __filename=fileURLToPath(import.meta.url)
-const __dirname =path.dirname(__filename)
+const __dirname =path.resolve()
 dotenv.config()
 const app =express()
 app.use(express.json())
+app.use(express.static(path.join(__dirname,'client/dist')))
 app.use(helmet())
 app.use(helmet.crossOriginResourcePolicy({policy:"cross-origin"}))
 app.use(morgan('common'))
 app.use(bodyParser.json({limit:"30mb" ,extented :true}))
 app.use(bodyParser.urlencoded({limit:"30mb",extended:true}))
 app.use(cors())
+app.get("*" ,(req,res)=>{
+    res.sendFile(path.join(__dirname,'/client','dist',"index.html"))
+})
 // app.use("/assets",express.static(path.join(__dirname,"public/assets")));
 app.use(fileUpload({
     useTempFiles:true
