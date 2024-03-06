@@ -6,7 +6,6 @@ import Navbar from "components/Navbar";
 import FriendListWidget from "../widgits/FriendsListWidget";
 import UserWidget from "pages/widgits/UserWidgit";
 import MyPostWidgit from "pages/widgits/MyPostWidgit";
-// import PostWidget from "pages/widgits/PostWidgit";
 import PostsWidget from "pages/widgits/PostsWidgits";
 
 const ProfilePage = () => {
@@ -14,6 +13,7 @@ const ProfilePage = () => {
   const { userId } = useParams();
   const token = useSelector((state) => state.token);
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
+  const loggedInUser=useSelector((state)=>state.user)
 
   const getUser = async () => {
     const response = await fetch(`http://localhost:4000/users/${userId}`, {
@@ -49,9 +49,15 @@ const ProfilePage = () => {
           flexBasis={isNonMobileScreens ? "42%" : undefined}
           mt={isNonMobileScreens ? undefined : "2rem"}
         >
-          <MyPostWidgit userPicturePath={user.userPicturePath} />
+          {loggedInUser._id===userId ? (
+            <>
+            <MyPostWidgit userPicturePath={user.userPicturePath} />
           <Box m="2rem 0" />
           <PostsWidget userId={userId} isProfile />
+            </>
+          ):(
+            <PostsWidget userId={userId} isProfile />
+          )}
         </Box>
       </Box>
     </Box>

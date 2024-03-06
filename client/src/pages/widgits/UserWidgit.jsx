@@ -23,6 +23,8 @@ const UserWidget=({userId,userPicturePath})=>{
     const dark=palette.neutral.dark;
     const medium=palette.neutral.medium;
     const main=palette.neutral.main;
+  const friends = useSelector((state) => state.user.friends);
+
 
     const getUser=async()=>{
         const response=await fetch(`http://localhost:4000/users/${userId}`,{
@@ -45,7 +47,6 @@ const UserWidget=({userId,userPicturePath})=>{
         occupation,
         viewedProfile,
         impressions,
-        friends,
     }=user
 
     return(

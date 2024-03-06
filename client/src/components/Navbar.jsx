@@ -7,19 +7,33 @@ import { setMode,setLogout } from 'state/store'
 import { useNavigate } from 'react-router-dom'
 import FlexBetween from './FlexBetween'
 import zIndex from '@mui/material/styles/zIndex'
+import UserImage from './UserImage'
 export default function Navbar() {
     const [isMoblieMenuToggle,setIsMobileMenuToggle]=useState(false)
     const dispatch=useDispatch();
     const navigate=useNavigate();
     const user=useSelector((state)=>state.user)
     const isNonMobileScreens=useMediaQuery("(min-width:1000px")
-
+    const [query, setQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
     const theme=useTheme();
     const neutralLight=theme.palette.neutral.light;
     const dark=theme.palette.neutral.dark;
     const backgroud=theme.palette.background.default;
     const primaryLight=theme.palette.primary.light;
     const alt=theme.palette.background.alt;
+    const token=useSelector((state)=>state.token)
+    const handleSearch = async () => {
+        try {
+          const response = await fetch(`http://localhost:4000/users?q=${query}`,{
+            method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+          });
+          setSearchResults(response.data);
+        } catch (error) {
+          console.error('Error searching users:', error);
+        }
+      };
 
     const fullName=`${user?.firstName} ${user?.lastName}`
   return (
@@ -38,15 +52,18 @@ export default function Navbar() {
                 }}>
                     SocialMedia
             </Typography>
-            {isNonMobileScreens &&(
+            {/* {isNonMobileScreens &&(
                 <FlexBetween backgroundColor={neutralLight} borderRadius="9px" gap="3rem" padding="0.1rem 1.5rem">
-                    <InputBase placeholder='Search..'/>
-                    <IconButton>
+                    <InputBase placeholder='Search..' value={query} onChange={(e) => setQuery(e.target.value)}/>
+                    <IconButton  onClick={handleSearch}>
                         <Search/>
                     </IconButton>
 
                 </FlexBetween>
-            )}
+            )} */}
+            <Typography onClick={()=>navigate("/search")} sx={{backgroundColor:backgroud,p:"0.5rem 1rem", borderRadius:"5rem" }}>
+                <Search fontSize='medium'/>
+            </Typography>
         </FlexBetween>
         {isNonMobileScreens ?(
             <FlexBetween gap="2rem">

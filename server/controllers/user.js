@@ -63,12 +63,16 @@ export const addRemoveFriends=async(req,res)=>{
         res.status(404).json({message:err.message})
     }
 }
-export const getAllUsers=async(req,res)=>{
-    try{
-        const allUsers=await User.find();
-        res.status(200).json(allUsers);
+export const searchUser= async (req, res) => {
+    const { q } = req.query;
+  
+    try {
+      // Fetch users from the database based on the search query
+      const users = await User.find({ firstName: { $regex: new RegExp(q, 'i') } });
+  
+      res.json(users);
+    } catch (error) {
+      console.error('Error searching users:', error);
+      res.status(500).json({ message: 'Internal server error' });
     }
-    catch(err){
-        res.status(404).json({message:err.message})
-    }
-}
+  };

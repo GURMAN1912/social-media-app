@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
+import Searchpage from "pages/Searchpage/Searchpage";
 
 function App() {
   const mode = useSelector((state) => state.mode);
@@ -24,6 +25,7 @@ function App() {
               path="/home"
               element={isAuth ? <HomePage /> : <Navigate to="/" />}
             />
+            <Route path="/search" element={isAuth ? <Searchpage/> :<Navigate to='/'/>} />
             <Route
               path="/profile/:userId"
               element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
