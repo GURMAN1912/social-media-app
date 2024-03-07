@@ -1,5 +1,4 @@
 
-Creating a README for a GitHub repository for a social media app is crucial for providing information about the project, its purpose, features, installation instructions, and more. Below is a basic template you can use for your social media app's README:
 
 <h2>Social Media App</h2>
 Welcome to our Social Media App repository! This is a platform where users can connect, share, and interact with each other through various social features.
