@@ -10,6 +10,7 @@ import { Search,Message,DarkMode,LightMode,Notifications,Help,Menu,Close} from '
 import {IconButton,InputBase,Typography,Select,MenuItem,FormControl,useTheme,useMediaQuery} from "@mui/material"
 import Friends from 'components/Friends'
 import WidgetWrapper from 'components/WidgetWrapper'
+import { BaseURL } from 'backendlink'
 export default function Searchpage() {
     const [isMoblieMenuToggle,setIsMobileMenuToggle]=useState(false)
     const dispatch=useDispatch();
@@ -28,13 +29,13 @@ export default function Searchpage() {
 
     const handleSearch = async () => {
         try {
-          const response = await fetch(`http://localhost:4000/users?q=${query}`,{
+          const response = await fetch(`${BaseURL}users?q=${query}`,{
             method: "GET",
         headers: { Authorization: `Bearer ${token}` },
           });
           const data=await response.json()
           setSearchResults(data);
-          console.log(searchResults)
+          
         } catch (error) {
           console.error('Error searching users:', error);
         }

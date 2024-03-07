@@ -7,6 +7,7 @@ import FriendListWidget from "../widgits/FriendsListWidget";
 import UserWidget from "pages/widgits/UserWidgit";
 import MyPostWidgit from "pages/widgits/MyPostWidgit";
 import PostsWidget from "pages/widgits/PostsWidgits";
+import { BaseURL } from "backendlink";
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
@@ -16,7 +17,7 @@ const ProfilePage = () => {
   const loggedInUser=useSelector((state)=>state.user)
 
   const getUser = async () => {
-    const response = await fetch(`http://localhost:4000/users/${userId}`, {
+    const response = await fetch(`${BaseURL}users/${userId}`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });

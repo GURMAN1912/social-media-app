@@ -24,7 +24,7 @@ import {
   import { useState } from "react";
   import { useDispatch, useSelector } from "react-redux";
   import { setPosts } from "state/store";
-
+  import { BaseURL } from "backendlink";
 export default function MyPostWidgit({userPicturePath} ) {
     const dispatch=useDispatch();
     const [isImage,setIsImage]=useState(false)
@@ -45,7 +45,7 @@ export default function MyPostWidgit({userPicturePath} ) {
             formData.append("picture",image)
             formData.append("picturePath",image.name);
         }
-        const response=await fetch(`http://localhost:4000/posts`,{
+        const response=await fetch(`${BaseURL}posts`,{
             method:"POST",
             headers:{Authorization:`Bearer ${token}`},
             body:formData,

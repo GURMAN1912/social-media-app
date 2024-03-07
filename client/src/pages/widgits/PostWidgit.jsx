@@ -10,6 +10,7 @@ import { Formik } from "formik";
 import {TextField} from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import UserImage from "components/UserImage";
+import { BaseURL } from "backendlink";
 const PostWidget=({
     postId,
     postUserId,name,description,location,picturePath,userPicturePath,likes,comments
@@ -29,9 +30,9 @@ const PostWidget=({
     },[])
 
     const AddComment=async(comment)=>{
-        console.log(comment)
+        
         try {
-            const response = await fetch(`http://localhost:4000/posts/${postId}/comment`, {
+            const response = await fetch(`${BaseURL}posts/${postId}/comment`, {
                 method: "PATCH",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -55,7 +56,7 @@ const PostWidget=({
     }
 
     const patchLike=async()=>{
-        const response=await fetch(`http://localhost:4000/posts/${postId}/like`,{
+        const response=await fetch(`${BaseURL}posts/${postId}/like`,{
             method:"PATCH",
             headers:{
                 Authorization:`Bearer ${token}`,
