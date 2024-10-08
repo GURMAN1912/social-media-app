@@ -12,8 +12,6 @@ cloudinary.config({
 
   });
 
-console.log(cloudinary.config());
-
 export const register = async (req, res) => {
   try {
     const file = req.files.picture;
