@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import FlexBetween from './FlexBetween'
 import zIndex from '@mui/material/styles/zIndex'
 import UserImage from './UserImage'
+import { BaseURL } from 'backendlink'
 export default function Navbar() {
     const [isMoblieMenuToggle,setIsMobileMenuToggle]=useState(false)
     const dispatch=useDispatch();
@@ -25,7 +26,7 @@ export default function Navbar() {
     const token=useSelector((state)=>state.token)
     const handleSearch = async () => {
         try {
-          const response = await fetch(`http://localhost:4000/users?q=${query}`,{
+          const response = await fetch(`${BaseURL}users?q=${query}`,{
             method: "GET",
         headers: { Authorization: `Bearer ${token}` },
           });
@@ -52,7 +53,7 @@ export default function Navbar() {
                 }}>
                     SocialMedia
             </Typography>
-            {/* {isNonMobileScreens &&(
+            {isNonMobileScreens ?(
                 <FlexBetween backgroundColor={neutralLight} borderRadius="9px" gap="3rem" padding="0.1rem 1.5rem">
                     <InputBase placeholder='Search..' value={query} onChange={(e) => setQuery(e.target.value)}/>
                     <IconButton  onClick={handleSearch}>
@@ -60,10 +61,13 @@ export default function Navbar() {
                     </IconButton>
 
                 </FlexBetween>
-            )} */}
+            ):(
             <Typography onClick={()=>navigate("/search")} sx={{backgroundColor:backgroud,p:"0.5rem 1rem", borderRadius:"5rem" }}>
                 <Search fontSize='medium'/>
             </Typography>
+
+            )
+            }
         </FlexBetween>
         {isNonMobileScreens ?(
             <FlexBetween gap="2rem">
@@ -74,9 +78,6 @@ export default function Navbar() {
                         <LightMode sx={{color:dark,fontSize:"25px"}}/>
                     )}
                 </IconButton>
-                <Message sx={{fontSize:"25px"}}/> 
-                <Notifications sx={{fontSize:"25px"}}/>
-                <Help sx={{fontSize:"25px"}}/>
                 <FormControl variant='standard' value={fullName}/>
                 <Select value={fullName}
                 sx={{backgroundColor:neutralLight,
@@ -125,9 +126,6 @@ export default function Navbar() {
                         <LightMode sx={{color:dark,fontSize:"25px"}}/>
                     )}
                 </IconButton>
-                <Message sx={{fontSize:"25px"}}/> 
-                <Notifications sx={{fontSize:"25px"}}/>
-                <Help sx={{fontSize:"25px"}}/>
                 <FormControl variant='standard' value={fullName}/>
                 <Select value={fullName}
                 sx={{backgroundColor:neutralLight,

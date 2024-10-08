@@ -15,51 +15,49 @@ import {register} from './controllers/auth.js'
 import { verifyToken } from "./middleware/auth.middleware.js"
 import {createPost} from './controllers/posts.js'
 import fileUpload from "express-fileupload"
+import cloudinary from 'cloudinary'
 
-const __filename=fileURLToPath(import.meta.url)
-// const __dirname =path.resolve()
-dotenv.config()
-const app =express()
-app.use(express.json())
-// app.use(express.static(path.join(__dirname,'client/dist')))
-app.use(helmet())
-app.use(helmet.crossOriginResourcePolicy({policy:"cross-origin"}))
-app.use(morgan('common'))
-app.use(bodyParser.json({limit:"30mb" ,extented :true}))
-app.use(bodyParser.urlencoded({limit:"30mb",extended:true}))
-app.use(cors())
-// app.get("*" ,(req,res)=>{
-//     res.sendFile(path.join(__dirname,'/client','dist',"index.html"))
-// })
-// app.use("/assets",express.static(path.join(__dirname,"public/assets")));
-app.use(fileUpload({
-    useTempFiles:true
-}))
+const __filename = fileURLToPath(import.meta.url);
+dotenv.config();
+const app = express();
+app.use(express.json());
+app.use(helmet());
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+app.use(morgan('common'));
+app.use(bodyParser.json({ limit: "30mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+app.use(cors());
+app.use(fileUpload({ useTempFiles: true }));
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET,
+    secure: true
 
-
-const storage=multer.diskStorage({
-    destination:function(req,res,cb){
-        cb(null,"public/assets")
+  });
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "public/assets");
     },
-    filename:function(req,file,cb){
-        cb(null,file.originalname)
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
     }
-})
-const upload=multer({storage})
+});
+const upload = multer({ storage });
 
-app.post("/auth/register",register)
-app.post("/posts",verifyToken,createPost)
+app.post("/auth/register", register);
+app.post("/posts", verifyToken, createPost);
 
-app.use('/auth',authRoutes)
-app.use('/users',userRoutes)
-app.use("/posts",postRoutes)
+app.use('/auth', authRoutes);
+app.use('/users', userRoutes);
+app.use("/posts", postRoutes);
 
-const PORT=process.env.PORT||5000;
-mongoose.connect(process.env.MONGO_URL,{
-    useNewUrlParser:true,
-    useUnifiedTopology:true,
-}).then(()=>{
-    app.listen(PORT,()=>console.log(`Server Port: ${PORT}`))
-}).catch((error)=>{
-    console.log(`${error} did not connect`)
-})
+const PORT = process.env.PORT || 4001;
+
+// Only start the server after MongoDB is connected
+mongoose.connect(process.env.MONGO_URL, {
+}).then(() => {
+    app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
+}).catch((error) => {
+    console.log(`${error} did not connect`);
+});

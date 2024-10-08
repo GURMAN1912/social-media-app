@@ -1,1 +1,1 @@
-export const  BaseURL="https://social-media-app-server-beige.vercel.app/"
+export const  BaseURL="http://localhost:5000/";
