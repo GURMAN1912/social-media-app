@@ -26,7 +26,10 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan('common'));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
+app.use(cors({
+    origin: ['http://your-frontend-domain.com', 'http://localhost:3000'], // Replace with your frontend domain and localhost for development
+    credentials: true,  // If you're sending cookies or authentication tokens
+  }));
 app.use(fileUpload({ useTempFiles: true }));
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
