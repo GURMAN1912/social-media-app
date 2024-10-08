@@ -62,7 +62,8 @@ const Form = () => {
             {
                 method: "POST",
                 body: formData,
-            }
+                credentials: 'include', 
+            },
         );
         const savedUser = await savedUserResponse.json();
         onSubmitProps.resetForm();
@@ -78,6 +79,7 @@ const Form = () => {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(values),
+                credentials: 'include', 
             }
         );
         const loggedIn = await loggedInUserResponse.json();

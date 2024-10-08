@@ -27,8 +27,10 @@ app.use(morgan('common'));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors({
-    origin: ['http://your-frontend-domain.com', 'http://localhost:3000'], // Replace with your frontend domain and localhost for development
-    credentials: true,  // If you're sending cookies or authentication tokens
+    origin: ['http://your-frontend-domain.com', 'http://localhost:3000'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Add the HTTP methods you need
+    allowedHeaders: ['Content-Type', 'Authorization'],  // Add custom headers if necessary
+    credentials: true,  // If you're using cookies or tokens
   }));
 app.use(fileUpload({ useTempFiles: true }));
 cloudinary.config({
