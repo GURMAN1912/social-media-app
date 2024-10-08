@@ -20,7 +20,9 @@ import cloudinary from 'cloudinary';
 const __filename = fileURLToPath(import.meta.url);
 dotenv.config();
 const app = express();
-
+app.get("/", (req, res) => {
+    res.send("Hello from Express");
+});
 // Middleware
 app.use(express.json());
 app.use(helmet());
@@ -69,11 +71,11 @@ app.use("/posts", postRoutes);
 
 // Start Server After MongoDB Connection
 const PORT = process.env.PORT || 4001;
-mongoose.connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => {
-    app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
+mongoose.connect(process.env.MONGO_URL).then(() => {
+    console.log(`Connected to MongoDB`);
 }).catch((error) => {
     console.log(`${error} did not connect`);
 });
+
+// Export the app for Vercel
+export default app;
